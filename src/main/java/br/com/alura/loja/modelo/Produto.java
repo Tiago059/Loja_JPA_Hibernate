@@ -4,14 +4,18 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Produtos")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Produto {
 
 	@Id
@@ -22,7 +26,7 @@ public class Produto {
 	private BigDecimal preco;
 	private LocalDate dataCadastro = LocalDate.now();
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Categoria categoria;
 
 	public Produto(){}
@@ -81,5 +85,15 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+
+	@Override
+	public String toString() {
+		return nome + "\t" + descricao + "\t" + preco.toString() + "\t" + dataCadastro.toString()
+				+"\t" + categoria.getNome();
+	}
+	
+	
+	
+	
 
 }
